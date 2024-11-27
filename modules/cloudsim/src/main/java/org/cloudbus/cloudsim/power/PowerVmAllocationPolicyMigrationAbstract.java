@@ -9,14 +9,16 @@
 package org.cloudbus.cloudsim.power;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.cloudbus.cloudsim.*;
+import org.cloudbus.cloudsim.Host;
+import org.cloudbus.cloudsim.HostDynamicWorkload;
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.Vm;
+import org.cloudbus.cloudsim.VmAllocationPolicy;
 import org.cloudbus.cloudsim.core.CloudSim;
 import org.cloudbus.cloudsim.core.GuestEntity;
 import org.cloudbus.cloudsim.core.HostEntity;
@@ -50,8 +52,9 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends VmAllocat
 	private final List<GuestMapping> savedAllocation = new ArrayList<>();
 
 	private void growIfNeeded(List<List<Double>> l, int idx) {
-		for (int i = l.size(); i <= idx; i++)
+		for (int i = l.size(); i <= idx; i++) {
 			l.add(null);
+		}
 	}
 
 	/** A map of CPU utilization history (in percentage) for each host,
@@ -501,7 +504,7 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends VmAllocat
 		if (metricHistory.get(hostId) == null) {
 			metricHistory.set(hostId, new ArrayList<Double>());
 		}
-		if (timeHistory.get(hostId).isEmpty() || timeHistory.get(hostId).getLast() < CloudSim.clock()) {
+		if (timeHistory.get(hostId).isEmpty() || timeHistory.get(hostId).get(timeHistory.get(hostId).size()-1) < CloudSim.clock()) {
 			timeHistory.get(hostId).add(CloudSim.clock());
 			utilizationHistory.get(hostId).add(host.getUtilizationOfCpu());
 			metricHistory.get(hostId).add(metric);
@@ -634,8 +637,9 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends VmAllocat
 	 * @return the utilization history
 	 */
 	public List<Double> getUtilizationHistory(int hostId) {
-		if (hostId >= utilizationHistory.size())
+		if (hostId >= utilizationHistory.size()) {
 			return null;
+		}
 		return utilizationHistory.get(hostId);
 	}
 
@@ -645,8 +649,9 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends VmAllocat
 	 * @return the metric history
 	 */
 	public List<Double> getMetricHistory(int hostId) {
-		if (hostId >= metricHistory.size())
+		if (hostId >= metricHistory.size()) {
 			return null;
+		}
 		return metricHistory.get(hostId);
 	}
 
@@ -656,8 +661,9 @@ public abstract class PowerVmAllocationPolicyMigrationAbstract extends VmAllocat
 	 * @return the time history
 	 */
 	public List<Double> getTimeHistory(int hostId) {
-		if (hostId >= timeHistory.size())
+		if (hostId >= timeHistory.size()) {
 			return null;
+		}
 		return timeHistory.get(hostId);
 	}
 

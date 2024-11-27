@@ -14,7 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.cloudbus.cloudsim.core.*;
+import org.cloudbus.cloudsim.core.CloudActionTags;
+import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.CloudSimTags;
+import org.cloudbus.cloudsim.core.GuestEntity;
+import org.cloudbus.cloudsim.core.SimEntity;
+import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.lists.CloudletList;
 import org.cloudbus.cloudsim.lists.VmList;
 
@@ -190,7 +195,7 @@ public class DatacenterBroker extends SimEntity {
 			//TODO: Remo Andreoli: should I need this?
 			// getDatacenterCharacteristicsList().clear();
 			setDatacenterRequestedIdsList(new ArrayList<>());
-			createVmsInDatacenter(getDatacenterIdsList().getFirst());
+			createVmsInDatacenter(getDatacenterIdsList().get(0));
 		}
 	}
 

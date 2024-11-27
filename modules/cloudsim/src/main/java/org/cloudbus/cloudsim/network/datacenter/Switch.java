@@ -15,7 +15,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.cloudbus.cloudsim.Log;
-import org.cloudbus.cloudsim.core.*;
+import org.cloudbus.cloudsim.core.CloudActionTags;
+import org.cloudbus.cloudsim.core.CloudSim;
+import org.cloudbus.cloudsim.core.CloudSimTags;
+import org.cloudbus.cloudsim.core.SimEntity;
+import org.cloudbus.cloudsim.core.SimEvent;
 import org.cloudbus.cloudsim.core.predicates.PredicateType;
 
 /**
@@ -225,7 +229,7 @@ public class Switch extends SimEntity {
 
 			// Send to aggregate level
 			// ASSUMPTION: EACH EDGE is Connected to one aggregate level switch only
-			Switch sw = uplinkSwitches.getFirst();
+			Switch sw = uplinkSwitches.get(0);
 			pktsToUplinkSwitches.computeIfAbsent(sw.getId(), k -> new ArrayList<>()).add(hspkt);
 		}
 		else if (level == SwitchLevel.AGGR_LEVEL) { // packet received from edge router
@@ -236,7 +240,7 @@ public class Switch extends SimEntity {
             if (downlinkSwitches.stream().anyMatch(sw -> sw.getId() == switchId)) {
 				pktsToDownlinkSwitches.computeIfAbsent(switchId, k -> new ArrayList<>()).add(hspkt);
 			} else {// send to up to root level (ASSUMPTION: EACH EDGE is Connected to one aggregate level switch only)
-				Switch sw = uplinkSwitches.getFirst();
+				Switch sw = uplinkSwitches.get(0);
 				pktsToUplinkSwitches.computeIfAbsent(sw.getId(), k -> new ArrayList<>()).add(hspkt);
 			}
 		}

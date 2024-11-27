@@ -1,20 +1,20 @@
 package org.cloudbus.cloudsim.util;
 
+import static org.cloudbus.cloudsim.core.PowerGuestEntity.HISTORY_LENGTH;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.cloudbus.cloudsim.core.PowerGuestEntity.HISTORY_LENGTH;
-import org.junit.Test;
 import org.junit.Before;
+import org.junit.Test;
 
 public class HistoryStatTest {
     HistoryStat stat;
     List<Double> history;
     private void addUtilizationHistoryValue(List<Double> history, final double utilization) {
-        history.addFirst(utilization);
+        history.add(0,utilization);
         if (history.size() > HISTORY_LENGTH) {
             history.remove(HISTORY_LENGTH);
         }
@@ -43,10 +43,11 @@ public class HistoryStatTest {
             stat.offer(val);
             addUtilizationHistoryValue(history, val);
             assertEquals(stat.getMedian(), MathUtil.median(history), 1e-6);
-            if (stat.size() <= HISTORY_LENGTH-1)
-                assertEquals(val/2.0, stat.getMedian(), 1e-6);
-            else
-                assertEquals((val+val-(HISTORY_LENGTH-1))/2.0, stat.getMedian(), 1e-6);
+            if (stat.size() <= HISTORY_LENGTH-1) {
+				assertEquals(val/2.0, stat.getMedian(), 1e-6);
+			} else {
+				assertEquals((val+val-(HISTORY_LENGTH-1))/2.0, stat.getMedian(), 1e-6);
+			}
         }
     }
 
@@ -64,8 +65,9 @@ public class HistoryStatTest {
         for (int step = 0; step < 100; step++) {
             final int N = 1000;
             double samples[] = new double[N];
-            for (int i = 0; i < N; i++)
-                samples[i] = gen.nextDouble();
+            for (int i = 0; i < N; i++) {
+				samples[i] = gen.nextDouble();
+			}
 
             double medianSum = 0.0;
             double meanSum = 0.0;

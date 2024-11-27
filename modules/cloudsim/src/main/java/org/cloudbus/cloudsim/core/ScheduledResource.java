@@ -1,9 +1,10 @@
 package org.cloudbus.cloudsim.core;
 
-import org.cloudbus.cloudsim.core.predicates.PredicateType;
-import org.cloudbus.cloudsim.Log;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import org.cloudbus.cloudsim.Log;
+import org.cloudbus.cloudsim.core.predicates.PredicateType;
 
 /* a CPU, a network link, ... */
 public class ScheduledResource extends SimEntity {
@@ -22,12 +23,13 @@ public class ScheduledResource extends SimEntity {
         }
 	@Override
 	public int compareTo(ResourceUse u) {
-            if (amountLeft < u.amountLeft)
-                return -1;
-            else if (amountLeft > u.amountLeft)
-                return 1;
-            else
-                return 0;
+            if (amountLeft < u.amountLeft) {
+				return -1;
+			} else if (amountLeft > u.amountLeft) {
+				return 1;
+			} else {
+				return 0;
+			}
         }
     }
     private double capacity;
@@ -39,7 +41,8 @@ public class ScheduledResource extends SimEntity {
         this.capacity = capacity;
     }
 
-    public void startEntity() {
+    @Override
+	public void startEntity() {
         this.lastClock = CloudSim.clock();
     }
 
@@ -50,13 +53,15 @@ public class ScheduledResource extends SimEntity {
             double end_time = lastClock + ru.amountLeft / capacity * amountsLeft.size();
             if (now < end_time) {
                 /* we are updating before the first resource consumption finished, update all amountsLeft till now */
-                for (ResourceUse ru1 : amountsLeft)
-                    ru1.amountLeft -= (now - lastClock) / capacity / amountsLeft.size();
+                for (ResourceUse ru1 : amountsLeft) {
+					ru1.amountLeft -= (now - lastClock) / capacity / amountsLeft.size();
+				}
                 lastClock = now;
             } else {
-                for (ResourceUse ru1 : amountsLeft)
-                /* we are updating after the first resource consumption finished, just update till end-time */
+                for (ResourceUse ru1 : amountsLeft) {
+					/* we are updating after the first resource consumption finished, just update till end-time */
                     ru1.amountLeft -= (end_time - lastClock) / capacity / amountsLeft.size();
+				}
                 lastClock = end_time;
             }
         } else {
@@ -66,9 +71,10 @@ public class ScheduledResource extends SimEntity {
 
     private void scheduleNext() {
         CloudSim.cancelAll(getId(), new PredicateType(CloudActionTags.NETWORK_PKT_FORWARD));
-        if (amountsLeft.isEmpty())
-            return;
-        double delay = amountsLeft.getFirst().amountLeft / capacity * amountsLeft.size();
+        if (amountsLeft.isEmpty()) {
+			return;
+		}
+        double delay = amountsLeft.get(0).amountLeft / capacity * amountsLeft.size();
         schedule(getId(), delay, CloudActionTags.NETWORK_PKT_FORWARD);
     }
 

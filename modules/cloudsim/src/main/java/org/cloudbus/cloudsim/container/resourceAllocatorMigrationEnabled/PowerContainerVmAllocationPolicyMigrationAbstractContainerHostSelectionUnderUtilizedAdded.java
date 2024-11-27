@@ -7,15 +7,17 @@
 
 package org.cloudbus.cloudsim.container.resourceAllocatorMigrationEnabled;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.cloudbus.cloudsim.Host;
 import org.cloudbus.cloudsim.core.GuestEntity;
 import org.cloudbus.cloudsim.core.HostEntity;
 import org.cloudbus.cloudsim.core.PowerGuestEntity;
-import org.cloudbus.cloudsim.selectionPolicies.SelectionPolicy;
 import org.cloudbus.cloudsim.lists.HostList;
 import org.cloudbus.cloudsim.power.PowerHost;
-
-import java.util.*;
+import org.cloudbus.cloudsim.selectionPolicies.SelectionPolicy;
 
 /**
  * Created by sareh on 13/08/15.
@@ -53,7 +55,7 @@ public abstract class PowerContainerVmAllocationPolicyMigrationAbstractContainer
         HostList.sortByCpuUtilizationDescending(underUtilizedHostList);
 //        Log.print(String.format("The under Utilized Hosts are %d", underUtilizedHostList.size()));
 
-        return (PowerHost) underUtilizedHostList.getFirst();
+        return (PowerHost) underUtilizedHostList.get(0);
     }
 
     @Override
